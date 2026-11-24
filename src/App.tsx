@@ -4,27 +4,44 @@
  */
 
 import { useState } from 'react';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowDown, ArrowRight, Volume2, VolumeX } from 'lucide-react';
 import { BriefingStage } from './components/BriefingStage';
 import { SimulationStage } from './components/SimulationStage';
 import { OutroStage } from './components/OutroStage';
 import { SimulatorLoader } from './components/SimulatorLoader';
+import { KingdomSavedCutscene } from './components/KingdomSavedCutscene';
 import {
   DakgalbiWarriorSprite,
   MakguksuWarriorSprite,
 } from './components/PixelSprites';
+import { soundEngine } from './utils/soundEngine';
 
 type AppView = 'briefing' | 'simulation' | 'outro';
 
 export default function App() {
   const [view, setView] = useState<AppView>('briefing');
   const [isLoadingSim, setIsLoadingSim] = useState(false);
+  const [showEndingCutscene, setShowEndingCutscene] = useState(false);
   const [simKey, setSimKey] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const ensureAudioStarted = () => {
+    soundEngine.startBgm();
+  };
+
+  const handleToggleSound = () => {
+    ensureAudioStarted();
+    const muted = soundEngine.toggleMute();
+    setIsMuted(muted);
+  };
 
   const enterSimulationWithLoader = (reset = false) => {
+    ensureAudioStarted();
+    soundEngine.playSfx('click');
     if (reset) {
       setSimKey((k) => k + 1);
     }
+    setShowEndingCutscene(false);
     setIsLoadingSim(true);
   };
 
@@ -35,6 +52,8 @@ export default function App() {
   };
 
   const scrollToBriefing = () => {
+    ensureAudioStarted();
+    soundEngine.playSfx('click');
     const el = document.getElementById('briefing-section');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -46,13 +65,26 @@ export default function App() {
       {/* Intentional Virtual Simulator Transition Loader */}
       {isLoadingSim && <SimulatorLoader onComplete={handleLoaderDone} />}
 
+      {/* Heroic Kingdom Saved Pixel Cutscene after Step 6 */}
+      {showEndingCutscene && (
+        <KingdomSavedCutscene
+          onContinueToOutro={() => {
+            setShowEndingCutscene(false);
+            setView('outro');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
+
       {/* Strict 3-Zone Pixel Top Bar */}
       <header className="sticky top-0 z-40 bg-[#1A1A2E] text-[#F5E6D3] border-b-4 border-[#FF5722]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-6">
           {/* Zone 1: Brand Title */}
           <button
             type="button"
             onClick={() => {
+              ensureAudioStarted();
+              soundEngine.playSfx('click');
               setView('briefing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
@@ -77,6 +109,8 @@ export default function App() {
                   key={tab.id}
                   type="button"
                   onClick={() => {
+                    ensureAudioStarted();
+                    soundEngine.playSfx('click');
                     if (tab.id === 'simulation' && view !== 'simulation') {
                       enterSimulationWithLoader(false);
                     } else {
@@ -96,12 +130,31 @@ export default function App() {
             })}
           </nav>
 
-          {/* Zone 3: Primary Action */}
-          <div className="hidden md:flex items-center shrink-0">
+          {/* Zone 3: Sound Mute Toggle + Primary Action */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleToggleSound}
+              aria-label={isMuted ? '배경음 및 효과음 켜기' : '배경음 및 효과음 끄기'}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#2B2B4B] hover:bg-[#3A3A66] text-[#FFD54F] font-pixel text-xs border-2 border-[#F5E6D3]/50 whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span className="hidden sm:inline">음소거</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span className="hidden sm:inline">사운드 ON</span>
+                </>
+              )}
+            </button>
+
             <button
               type="button"
               onClick={() => enterSimulationWithLoader(true)}
-              className="px-3.5 py-1.5 bg-[#1E88E5] hover:bg-[#1565C0] text-white font-pixel text-xs border-2 border-white whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden md:inline-flex px-3.5 py-1.5 bg-[#1E88E5] hover:bg-[#1565C0] text-white font-pixel text-xs border-2 border-white whitespace-nowrap shrink-0 cursor-pointer"
             >
               체험 다시하기
             </button>
@@ -173,10 +226,7 @@ export default function App() {
         {view === 'simulation' && (
           <SimulationStage
             key={simKey}
-            onFinishToOutro={() => {
-              setView('outro');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onFinishToOutro={() => setShowEndingCutscene(true)}
           />
         )}
 
@@ -184,6 +234,8 @@ export default function App() {
           <OutroStage
             onRestart={() => enterSimulationWithLoader(true)}
             onGoToBriefing={() => {
+              ensureAudioStarted();
+              soundEngine.playSfx('click');
               setView('briefing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}

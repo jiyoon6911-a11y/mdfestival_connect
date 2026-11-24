@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Award, X } from 'lucide-react';
 import { GAME_STEPS, type HeroTeam } from '../data/festivalData';
+import { soundEngine } from '../utils/soundEngine';
 import { GameProgressWalker } from './GameProgressWalker';
 import { Step1Decorate } from './game/Step1Decorate';
 import { Step2ExplorerMap } from './game/Step2ExplorerMap';
@@ -44,6 +45,7 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
     if (walkTimerRef.current) window.clearTimeout(walkTimerRef.current);
     if (popupTimerRef.current) window.clearTimeout(popupTimerRef.current);
 
+    soundEngine.playSfx('walk');
     setIsWalking(true);
     setCurrentStep(targetStep);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -52,6 +54,7 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
       setIsWalking(false);
 
       if (completedStepNum !== null) {
+        soundEngine.playSfx('stamp');
         const meta = GAME_STEPS.find((s) => s.step === completedStepNum);
         setStampPopup({
           step: completedStepNum,
@@ -76,6 +79,7 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
     if (nextStep) {
       triggerWalkAndStamp(stepNum, nextStep);
     } else {
+      soundEngine.playSfx('stamp');
       const meta = GAME_STEPS.find((s) => s.step === stepNum);
       setStampPopup({
         step: stepNum,
