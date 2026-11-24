@@ -1,6 +1,6 @@
 {
-  "name": "막국수용사 닭갈비 왕국을 구해라",
-  "description": "춘천 막국수 닭갈비 축제 문제 개선 프로젝트 웹사이트",
+  "name": "막국수 용사, 닭갈비 왕국을 구해라 | CON:NECT",
+  "description": "한림대학교 문화기획동아리 CON:NECT의 춘천 막국수닭갈비축제 문제 개선 프로젝트 및 16비트 인터랙티브 체험 시뮬레이션",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

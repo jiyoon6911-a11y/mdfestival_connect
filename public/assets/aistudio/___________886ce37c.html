@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>나만의 막닭 꾸미기</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff0f3;--card:#ffffff;--ink:#5a3a3a;--line:#5a3a3a;--pink:#ff8fa3;--mint:#8fe3c8;--yel:#ffd966;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a2030;--card:#3b2f45;--ink:#ffeede;--line:#140b18}}
+:root[data-theme="dark"]{--bg:#2a2030;--card:#3b2f45;--ink:#ffeede;--line:#140b18}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Jua','Apple SD Gothic Neo','Malgun Gothic',sans-serif;min-height:100vh;background-image:radial-gradient(circle,#ff8fa322 2px,transparent 2px);background-size:24px 24px}
+main{max-width:520px;margin:0 auto;padding:16px 14px 40px;text-align:center}
+section{display:none}section.on{display:block}
+h1{font-size:34px;margin:14px 0 4px;color:#ff6b8a;line-height:1.15;text-shadow:3px 3px 0 #fff,-1px -1px 0 #fff,3px 0 0 #fff,0 3px 0 #fff,5px 5px 0 var(--line)}
+h2{font-size:24px;margin:6px 0 12px}
+p.sub{margin:0 0 18px;font-size:17px}
+.btn{font:inherit;font-size:18px;color:#5a3a3a;background:var(--yel);border:3px solid var(--line);border-radius:10px;padding:9px 16px;cursor:pointer;box-shadow:0 4px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.btn:focus-visible,.card:focus-visible,.tp:focus-visible{outline:3px dashed #ff6b8a;outline-offset:3px}
+.btn.pink{background:var(--pink)}.btn.mint{background:var(--mint)}.btn.gray{background:#e9dfe6}
+.btn.big{font-size:22px;padding:12px 22px}.btn.wide{width:100%;max-width:340px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.dishes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:14px;box-shadow:0 5px 0 var(--line);padding:10px 8px 12px;cursor:pointer;transition:transform .1s}
+.card:hover{transform:translateY(-3px) rotate(-1deg)}
+.card canvas{width:100%;aspect-ratio:1;image-rendering:pixelated;border-radius:8px;border:2px solid var(--line)}
+.card b{display:block;font-size:22px;margin-top:8px;font-weight:400}.card span{font-size:14px;opacity:.8}
+.stage{width:min(320px,90vw);aspect-ratio:1;margin:0 auto;border:4px solid var(--line);border-radius:14px;box-shadow:0 5px 0 var(--line);overflow:hidden;background:#fff}
+.stage canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.pop{animation:pop .22s}@keyframes pop{50%{transform:scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.card:hover{transform:none}}
+.count{margin:12px 0 4px;font-size:17px}
+.tps{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin:10px 0}
+.tp{font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:10px;box-shadow:0 3px 0 var(--line);padding:6px 2px 7px;cursor:pointer;position:relative}
+.tp:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.tp canvas{width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 2px;background:#fff1e4;border-radius:6px}
+.tp i{position:absolute;top:-8px;right:-6px;background:#ff6b8a;color:#fff;border:2px solid var(--line);border-radius:10px;min-width:22px;font-style:normal;font-size:13px;line-height:18px}
+.msg{font-size:20px;margin:16px 0 4px}.sum{font-size:15px;opacity:.85;margin:0 auto;max-width:360px}
+.col{display:flex;flex-direction:column;align-items:center;gap:12px;margin:16px 0}
+#modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+#modal.on{display:flex}
+#modal .box{background:var(--card);border:4px solid var(--line);border-radius:16px;padding:14px;max-width:420px;width:100%;text-align:center}
+#modal img{max-width:100%;max-height:58vh;border-radius:8px;border:2px solid var(--line);-webkit-touch-callout:default;user-select:auto}
+#modal p{margin:10px 0;font-size:17px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--line);color:#fff;padding:10px 18px;border-radius:20px;font-size:17px;opacity:0;pointer-events:none;transition:.25s;z-index:30}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<main>
+<section id="s-home" class="on">
+  <h1>나만의 막닭 꾸미기</h1>
+  <p class="sub">춘천 닭갈비 막국수 축제에 어서 오세요!<br>꾸밀 요리를 골라 주세요</p>
+  <div class="dishes">
+    <button class="card" data-dish="mak"><canvas id="h-mak" width="160" height="160"></canvas><b>막국수</b><span>시원새콤 비빔!</span></button>
+    <button class="card" data-dish="dak"><canvas id="h-dak" width="160" height="160"></canvas><b>닭갈비</b><span>지글지글 불판!</span></button>
+  </div>
+</section>
+
+<section id="s-make">
+  <h2 id="mk-title"></h2>
+  <div class="stage"><canvas id="cv" width="160" height="160"></canvas></div>
+  <div class="count" id="cnt"></div>
+  <div class="tps" id="tps"></div>
+  <div class="row">
+    <button class="btn gray" id="undo">↩ 뒤로가기</button>
+    <button class="btn gray" id="clear">싹 비우기</button>
+    <button class="btn pink big" id="done">완성!</button>
+  </div>
+  <button class="btn" id="home1">처음으로</button>
+</section>
+
+<section id="s-result">
+  <h2>짜잔! 완성이에요</h2>
+  <div class="stage"><canvas id="cv2" width="160" height="160"></canvas></div>
+  <div class="msg" id="rmsg"></div>
+  <p class="sum" id="rsum"></p>
+  <div class="col">
+    <button class="btn mint big wide" id="save">내 휴대폰에 저장</button>
+    <button class="btn pink big wide" id="story">인스타 스토리 공유</button>
+  </div>
+  <div class="row">
+    <button class="btn" id="again">다시 꾸미기</button>
+    <button class="btn" id="edit">이어서 꾸미기</button>
+    <button class="btn gray" id="home2">처음으로</button>
+  </div>
+</section>
+</main>
+
+<div id="modal" role="dialog" aria-modal="true"><div class="box">
+  <img id="m-img" alt="완성한 막닭 이미지">
+  <p id="m-txt"></p>
+  <button class="btn" id="m-close">닫기</button>
+</div></div>
+<div id="toast" role="status"></div>
+
+<script>
+var N=160,g;
+function P(x,y,w,h,c){g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),w,h)}
+function ell(cx,cy,rx,ry,c,ol){cx=Math.round(cx);cy=Math.round(cy);rx=Math.max(1,Math.round(rx));ry=Math.max(1,Math.round(ry));if(ol)ell(cx,cy,rx+1,ry+1,ol);for(var d=-ry;d<=ry;d++){var h=Math.round(rx*Math.sqrt(1-d*d/(ry*ry)));P(cx-h,cy+d,2*h+1,1,c)}}
+function sh(cx,cy,rx,ry,b,hi,lo,ol){ell(cx,cy,rx,ry,lo,ol);ell(cx-1,cy-1,rx-2,ry-2,b);ell(cx-rx*.35,cy-ry*.4,rx*.35,ry*.28,hi)}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function j(s,i){var v=Math.sin((s*97+i)*12.9898)*43758.5453;return v-Math.floor(v)}
+function strand(x,y,len,ph,b,hi,lo,t){for(var i=0;i<len;i++){var yy=y+Math.round(Math.sin(i*.45+ph)*2);P(x+i,yy+t,1,1,lo);P(x+i,yy,1,t,b);P(x+i,yy,1,1,hi)}}
+function dots(x,y,s,n,sp,cols){for(var i=0;i<n;i++)P(x+(j(s,i)-.5)*sp*2,y+(j(s,i+50)-.5)*sp,j(s,i+9)>.5?2:1,1,cols[i%cols.length])}
+function bars(x,y,s,hi,lo){var v=s>.5;for(var i=0;i<7;i++){var o=Math.round((j(s,i)-.5)*4),L=10+Math.round(j(s,i+20)*4);if(v){P(x-7+i*2,y-L/2+o,1,L,hi);P(x-6+i*2,y-L/2+o,1,L,lo)}else{P(x-L/2+o,y-7+i*2,L,1,hi);P(x-L/2+o,y-6+i*2,L,1,lo)}}}
+function ring(x,y){ell(x,y,5,5,'#3e9e36','#24692a');ell(x,y,3,3,'#dcf4b2');P(x-2,y,5,1,'#fff');P(x,y-2,1,5,'#fff');P(x-1,y-1,1,1,'#f4e68a')}
+function stick(x,y){P(x-9,y-3,19,7,'#a88a5c');P(x-8,y-3,17,6,'#d9bd8a');P(x-8,y-3,17,3,'#f8e8c8');P(x-7,y-3,9,1,'#fffaf0');P(x+3,y-1,4,2,'#d23a22');P(x-6,y+1,2,1,'#d23a22')}
+
+var S={
+oil:function(x,y){ell(x,y,10,4,'#f2b930aa');ell(x,y,8,3,'#ffd75acc');ell(x-3,y-1,4,1,'#fff7c8');P(x+4,y-1,2,1,'#fff7c8');ell(x+12,y+3,2,1,'#ffd75acc');ell(x-12,y-2,2,1,'#ffd75acc')},
+nori:function(x,y,s){dots(x,y,s,26,9,['#16301f','#244a2f','#0f2016'])},
+sesame:function(x,y,s){dots(x,y,s,18,8,['#fff6dc','#fff6dc','#d9b27a','#fffaf0'])},
+egg:function(x,y){sh(x,y,10,7,'#fffdf6','#ffffff','#d8cbb0','#a89874');sh(x,y,4,3,'#ffc21f','#ffe680','#e08f0a')},
+cuc:function(x,y,s){bars(x,y,s,'#8fdc7e','#3f9f3f')},
+pear:function(x,y,s){bars(x,y,s,'#fffbe0','#e3d27e')},
+pyeon:function(x,y){P(x-8,y-5,17,11,'#5a2e22');P(x-7,y-4,15,9,'#e8a090');P(x-7,y-4,15,2,'#f6c5b8');P(x-7,y+3,15,2,'#c97a6c');P(x-5,y-1,5,1,'#fbe3da');P(x+2,y,4,1,'#fbe3da');P(x-1,y+2,3,1,'#fbe3da')},
+cake:function(x,y){stick(x-1,y-4);stick(x+2,y+4)},
+cheese:function(x,y){P(x-8,y-5,16,11,'#e8a21a');P(x-7,y-5,15,9,'#ffd23f');P(x-7,y-5,15,2,'#fff08a');ell(x-3,y,1,1,'#e8a21a');ell(x+3,y+1,2,1,'#e8a21a');P(x-6,y+5,3,4,'#ffd23f');P(x+3,y+5,2,3,'#ffd23f')},
+potato:function(x,y){P(x-8,y-6,16,13,'#4e1d38');P(x-7,y-5,14,11,'#7c3358');P(x-6,y-5,12,8,'#ffb13d');P(x-6,y-5,12,2,'#ffd985');P(x-5,y-1,3,1,'#f09a1f');P(x+1,y,3,1,'#f09a1f');P(x-7,y+3,14,1,'#a04a76')},
+udon:function(x,y){for(var i=0;i<5;i++)strand(x-9,y-6+i*3,18,i*1.3,'#fffaf0','#ffffff','#d9c9a6',2)},
+cabbage:function(x,y){sh(x,y,9,6,'#b6e07a','#e8f8bd','#7fb148','#5f8f33');P(x-6,y,12,1,'#eafbc7');P(x+1,y-3,1,3,'#eafbc7');P(x-4,y+1,1,3,'#eafbc7')},
+perilla:function(x,y){sh(x,y,9,7,'#2f8f3f','#62cc6e','#17552a','#0f3a1c');P(x-8,y,16,1,'#a6ec9f');P(x-3,y-3,1,2,'#a6ec9f');P(x+2,y+1,1,3,'#a6ec9f');P(x,y+7,2,3,'#2a7a2b')},
+scallion:function(x,y){[[-8,-2],[-2,-5],[5,-2],[-5,4],[3,5]].forEach(function(r){var a=x+r[0],b=y+r[1];ell(a,b,3,3,'#3f9e35','#2a6f25');ell(a,b,2,2,'#cdeea6');P(a,b,1,1,'#f8fde8')})},
+minari:function(x,y){for(var i=0;i<5;i++){strand(x-10,y-6+i*3,20,i*1.1,'#3c9a3a','#8ee07f','#256a28',1);ell(x+10,y-6+i*3,2,1,'#7fd37a')}},
+pepper:function(x,y,s){dots(x,y,s,34,9,['#e0301a','#8a1408','#ff6a3d','#b01c0c'])},
+chili:function(x,y){ring(x-5,y-2);ring(x+5,y+3)}
+};
+
+var DISH={
+mak:{name:'막국수',reg:{cx:80,cy:73,rx:40,ry:11},tops:[['oil','들기름'],['nori','김가루'],['sesame','깨'],['egg','삶은 달걀'],['cuc','채 썬 오이'],['pear','채 썬 배'],['pyeon','편육']]},
+dak:{name:'닭갈비',reg:{cx:70,cy:90,rx:38,ry:14},tops:[['cake','떡사리'],['cheese','치즈'],['potato','고구마'],['udon','우동사리'],['cabbage','양배추'],['perilla','깻잎'],['scallion','대파'],['minari','미나리'],['pepper','고춧가루'],['chili','청양고추']]}
+};
+var NAMES={};Object.keys(DISH).forEach(function(k){DISH[k].tops.forEach(function(t){NAMES[t[0]]=t[1]})});
+
+function bg(){for(var y=0;y<16;y++)for(var x=0;x<16;x++){P(x*10,y*10,10,10,(x+y)%2?'#ffd6df':'#fff3ec');P(x*10,y*10,10,1,'#ffffff55');P(x*10,y*10,1,10,'#ffffff55')}}
+function bowl(){var r=rng(7),a,d,i,L=[];
+  ell(80,141,58,8,'#e3b3ad');ell(80,102,53,38,'#c4e6f0','#4f8797');P(58,138,44,4,'#8fc3d1');
+  ell(80,100,48,30,'#a82a15');ell(80,96,47,27,'#cf4125');
+  P(33,92,3,26,'#ffffffaa');P(33,88,3,2,'#ffffffaa');P(125,96,2,14,'#ffffff77');
+  ell(80,76,57,22,'#e9f7fb','#4f8797');ell(80,76,53,18,'#bfe0ea');ell(80,76,50,16,'#d4472a');
+  var pal=[['#e0502e','#ff8d5e','#962212'],['#d13d22','#f26a45','#7e1a0d'],['#ee6a3c','#ffb089','#a8301a']];
+  for(i=0;i<130;i++){a=r()*6.283;d=Math.sqrt(r())*.85;L.push([80+Math.cos(a)*42*d-6,73+Math.sin(a)*13*d-(1-d)*7,10+Math.floor(r()*8),r()*6,pal[i%3]])}
+  L.sort(function(p,q){return p[1]-q[1]}).forEach(function(s){strand(s[0],s[1],s[2],s[3],s[4][0],s[4][1],s[4][2],2)});
+  for(i=0;i<16;i++)P(44+r()*70,64+r()*20,2,1,'#ffc9b0')}
+function pan(){var r=rng(11),a,d,i,L=[];
+  P(124,84,26,9,'#0c0c10');P(125,85,24,7,'#2a2a33');P(125,85,24,2,'#4a4a5a');P(146,81,13,15,'#c4566d');P(147,82,11,13,'#ff8fa3');P(147,82,11,3,'#ffc2cf');
+  ell(70,139,60,6,'#e3b3ad');
+  ell(70,100,64,36,'#23232b','#0c0c10');P(12,98,3,16,'#ffffff1f');
+  ell(70,88,62,33,'#55556a','#0c0c10');ell(70,88,59,30,'#3b3b48');ell(70,90,54,26,'#15151a');
+  ell(70,90,49,22,'#a82614');ell(70,88,47,20,'#c53119');
+  for(i=0;i<28;i++){a=r()*6.283;d=Math.sqrt(r());L.push([70+Math.cos(a)*40*d,90+Math.sin(a)*15*d,5+r()*3,3+r()*2])}
+  L.sort(function(p,q){return p[1]-q[1]}).forEach(function(c){sh(c[0],c[1],c[2],c[3],'#d9422a','#ff7d58','#8d1b0e')});
+  for(i=0;i<34;i++)P(30+r()*80,76+r()*26,1+(i%2),1,i%3?'#7a1308':'#ff9a78')}
+function sparkle(x,y){P(x,y-4,1,9,'#fff7a8');P(x-4,y,9,1,'#fff7a8');P(x-1,y-1,3,3,'#fff');P(x-2,y-2,1,1,'#ffe36b');P(x+2,y+2,1,1,'#ffe36b')}
+function steam(){[[48,10],[70,4],[92,12]].forEach(function(p,k){for(var i=0;i<16;i++)P(p[0]+Math.round(Math.sin(i*.7+k)*3),p[1]+i*2,3,2,i%4<3?'#ffffffcc':'#ffffff66')})}
+
+function place(dish,t,r){var R=DISH[dish].reg,a=r()*6.283,d=Math.sqrt(r());return{t:t,x:R.cx+Math.cos(a)*R.rx*d,y:R.cy+Math.sin(a)*R.ry*d,s:r()}}
+function scene(ctx,dish,items,fancy){g=ctx;g.clearRect(0,0,N,N);bg();
+  dish==='mak'?bowl():pan();
+  items.map(function(o,i){return[o,i]}).sort(function(a,b){return a[0].y-b[0].y||a[1]-b[1]}).forEach(function(e){S[e[0].t](Math.round(e[0].x),Math.round(e[0].y),e[0].s)});
+  if(fancy){if(dish==='dak')steam();[[16,16],[144,20],[16,146],[146,142],[80,12]].forEach(function(p){sparkle(p[0],p[1])})}}
+
+var $=function(i){return document.getElementById(i)};
+var cur=null,items=[],MAX=36;
+function show(id){document.querySelectorAll('section').forEach(function(s){s.classList.toggle('on',s.id===id)});window.scrollTo(0,0)}
+var tt;function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},1800)}
+
+(function(){var r=rng(5);
+ scene($('h-mak').getContext('2d'),'mak',['egg','nori','cuc','pyeon','sesame','pear','oil'].map(function(t){return place('mak',t,r)}),false);
+ scene($('h-dak').getContext('2d'),'dak',['cake','cheese','cabbage','chili','perilla','scallion','potato'].map(function(t){return place('dak',t,r)}),false)})();
+
+function render(){scene($('cv').getContext('2d'),cur,items,false);
+  $('cnt').textContent=items.length?'올린 재료 '+items.length+'개 / '+MAX+'개':'재료를 하나씩 눌러서 올려 보세요!';
+  var c={};items.forEach(function(o){c[o.t]=(c[o.t]||0)+1});
+  document.querySelectorAll('.tp').forEach(function(b){var n=c[b.dataset.t]||0,i=b.querySelector('i');if(n){if(!i){i=document.createElement('i');b.appendChild(i)}i.textContent=n}else if(i)i.remove()})}
+function pop(){var s=$('cv').parentNode;s.classList.remove('pop');void s.offsetWidth;s.classList.add('pop')}
+function start(d,keep){cur=d;if(!keep)items=[];$('mk-title').textContent=DISH[d].name+' 꾸미기';
+  var box=$('tps');box.innerHTML='';
+  DISH[d].tops.forEach(function(t){var b=document.createElement('button');b.className='tp';b.dataset.t=t[0];
+    var c=document.createElement('canvas');c.width=32;c.height=32;b.appendChild(c);b.appendChild(document.createTextNode(t[1]));
+    g=c.getContext('2d');S[t[0]](16,16,.3);
+    b.onclick=function(){if(items.length>=MAX){toast('그릇이 가득 찼어요! 하나 빼 볼까요?');return}items.push(place(cur,t[0],Math.random));render();pop()};
+    box.appendChild(b)});
+  render();show('s-make')}
+document.querySelectorAll('.card').forEach(function(c){c.onclick=function(){start(c.dataset.dish)}});
+$('undo').onclick=function(){if(!items.length){toast('되돌릴 재료가 없어요');return}items.pop();render();pop()};
+$('clear').onclick=function(){if(items.length){items=[];render()}};
+$('home1').onclick=$('home2').onclick=function(){show('s-home')};
+$('again').onclick=function(){start(cur)};
+$('edit').onclick=function(){start(cur,true)};
+
+// ---- export images (square for phone gallery, 9:16 for stories)
+var ex={sq:null,st:null},FEST='춘천 닭갈비 막국수 축제';
+function blobOf(c){return new Promise(function(ok){c.toBlob(ok,'image/png')})}
+function T(x,t,px,y,size,fill,stroke){x.font=size+'px Jua,"Apple SD Gothic Neo","Malgun Gothic",sans-serif';x.textAlign='center';x.lineJoin='round';if(stroke){x.lineWidth=size/6;x.strokeStyle=stroke;x.strokeText(t,px,y)}x.fillStyle=fill;x.fillText(t,px,y)}
+function frame(x,y0){x.imageSmoothingEnabled=false;x.fillStyle='#5a3a3a';x.fillRect(48,y0-12,984,984);x.drawImage($('cv2'),60,y0,960,960)}
+async function buildExports(){ex={sq:null,st:null};
+  try{await document.fonts.load('40px Jua')}catch(e){}
+  var a=document.createElement('canvas');a.width=a.height=1080;var x=a.getContext('2d');
+  x.fillStyle='#ffd6df';x.fillRect(0,0,1080,1080);frame(x,36);
+  T(x,'나만의 막닭 꾸미기 · '+FEST,540,1056,34,'#5a3a3a');
+  var b=document.createElement('canvas');b.width=1080;b.height=1920;x=b.getContext('2d');
+  var gr=x.createLinearGradient(0,0,0,1920);gr.addColorStop(0,'#ffc2d1');gr.addColorStop(1,'#fff1d6');x.fillStyle=gr;x.fillRect(0,0,1080,1920);
+  x.fillStyle='#ffffff66';for(var i=0;i<18;i++)for(var k=0;k<32;k++){x.beginPath();x.arc(30+i*60+(k%2)*30,30+k*60,6,0,6.3);x.fill()}
+  T(x,'나만의 막닭',540,250,120,'#ff6b8a','#ffffff');T(x,'꾸미기',540,380,120,'#ff6b8a','#ffffff');
+  frame(x,480);
+  T(x,'나의 '+DISH[cur].name+' 완성!',540,1590,68,'#5a3a3a','#ffffff');
+  T(x,FEST,540,1710,54,'#5a3a3a');
+  T(x,'#춘천닭갈비막국수축제 #나만의막닭',540,1790,40,'#e0556f');
+  ex.sq=await blobOf(a);ex.st=await blobOf(b)}
+$('done').onclick=function(){if(!items.length){toast('재료를 하나 이상 올려 주세요!');return}
+  scene($('cv2').getContext('2d'),cur,items,true);
+  var c={};items.forEach(function(o){c[o.t]=(c[o.t]||0)+1});
+  var CAP={mak:['시원하고 새콤달콤! 입에 침이 고여요','들기름 향이 솔솔~ 한 젓가락 어때요?'],dak:['지글지글 맛있는 소리가 들려요!','치즈 쭉~ 늘어나는 비주얼이에요']};
+  $('rmsg').textContent=CAP[cur][Math.floor(Math.random()*2)];
+  $('rsum').textContent=DISH[cur].name+' 토핑: '+Object.keys(c).map(function(k){return NAMES[k]+' x'+c[k]}).join(', ');
+  show('s-result');buildExports()};
+
+// ---- deliver: share sheet / download capability / long-press fallback
+function openModal(blob,story){$('m-img').src=URL.createObjectURL(blob);
+  $('m-txt').textContent=story?'이미지를 길게 눌러 저장한 뒤, 인스타그램 스토리에서 불러와 주세요!':'이미지를 길게 눌러 \'사진에 저장\'을 선택하면 휴대폰 갤러리에 저장돼요!';
+  $('modal').classList.add('on')}
+$('m-close').onclick=function(){$('modal').classList.remove('on')};
+async function deliver(blob,name,story){
+  if(!blob){toast('이미지를 만드는 중이에요. 잠시 후 다시 눌러 주세요');return}
+  var file=null;try{file=new File([blob],name,{type:'image/png'})}catch(e){}
+  var share=async function(){if(file&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'나만의 막닭 꾸미기',text:FEST+' #나만의막닭'});return true}return false};
+  var dl=async function(){if(typeof claude==='undefined'||!claude.use)return false;var d=await claude.use('downloads');if(!d)return false;await d.save({filename:name,data:blob});return true};
+  var order=story?[share,dl]:[dl,share];
+  for(var i=0;i<order.length;i++){
+    try{if(await order[i]()){toast(story?'공유 창에서 인스타그램을 선택해 주세요':'저장 요청을 보냈어요');return}}
+    catch(e){if(e&&(e.name==='AbortError'||e.code==='declined'))return}}
+  openModal(blob,story)}
+$('save').onclick=function(){deliver(ex.sq,'makdak.png',false)};
+$('story').onclick=function(){deliver(ex.st,'makdak-story.png',true)};
+</script>
+</body>
+</html>
