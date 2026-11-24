@@ -1,0 +1,6 @@
+{
+  "name": "막국수용사 닭갈비 왕국을 구해라",
+  "description": "춘천 막국수 닭갈비 축제 문제 개선 프로젝트 웹사이트",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
