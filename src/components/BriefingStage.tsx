@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, AlertTriangle } from 'lucide-react';
+import { ArrowRight, AlertTriangle } from 'lucide-react';
 import { AS_IS_PROBLEMS, BACKGROUND_METRICS } from '../data/festivalData';
 import { DakgalbiWarriorSprite, MakguksuWarriorSprite } from './PixelSprites';
 
@@ -9,42 +9,11 @@ interface BriefingStageProps {
 export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
   return (
     <div>
-      {/* Part A: 프로젝트명 + 기획 배경 + 4대 문제점 */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-10">
-        {/* Intro Hero Card */}
-        <div className="pixel-box bg-white p-6 md:p-10">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div className="space-y-4 max-w-3xl">
-              <div className="font-pixel text-xs sm:text-sm text-[#E53935]">
-                한림대학교 문화기획동아리 CON:NECT · 춘천 막국수닭갈비축제 문제 개선 프로젝트
-              </div>
-              <h1 className="font-pixel text-2xl sm:text-4xl md:text-[42px] text-[#1A1A2E] leading-tight text-balance">
-                막국수 용사, 닭갈비 왕국을 구해라
-              </h1>
-              <p className="text-sm sm:text-base text-[#1A1A2E]/85 leading-relaxed">
-                2025년 가격 정찰제와 도심 수변 이전으로 약 30만 명을 유치하고 2026년 50만 명
-                규모로 성장하는 <strong>춘천 막국수닭갈비축제</strong>. 현장 답사를 통해 발굴한
-                문제점을 짚어보고, 아래로 스크롤하여 우리가 새롭게 설계한 축제 현장을 직접 걸어보세요.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center gap-3 shrink-0">
-              <div className="flex items-center gap-4 p-3 bg-[#F5E6D3] border-3 border-[#1A1A2E]">
-                <DakgalbiWarriorSprite className="w-14 h-14 animate-pixel-bob" />
-                <span className="font-arcade text-xs text-[#E53935]">VS</span>
-                <MakguksuWarriorSprite className="w-14 h-14 animate-pixel-bob" />
-              </div>
-              <a
-                href="#enter-simulator"
-                className="inline-flex items-center gap-1.5 text-xs font-pixel text-[#1E88E5] hover:underline"
-              >
-                <span>아래로 스크롤해 시뮬레이션 입장</span>
-                <ArrowDown className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
-        </div>
-
+      {/* Briefing Content: Data Background & 4 Field Problems */}
+      <section
+        id="briefing-section"
+        className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-12"
+      >
         {/* 1. 데이터 기반 기획 배경 */}
         <div className="space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-2">
@@ -120,7 +89,7 @@ export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
         </div>
       </section>
 
-      {/* Part B: Full-Viewport Transition Screen ("만약 2026 축제가 이렇게 바뀐다면?") */}
+      {/* Full-Viewport Transition Screen ("만약 2026 축제가 이렇게 바뀐다면?") */}
       <section
         id="enter-simulator"
         className="min-h-[calc(100vh-4rem)] bg-[#1A1A2E] text-[#F5E6D3] border-y-4 border-[#FF5722] flex flex-col items-center justify-center px-6 py-16 text-center relative overflow-hidden"

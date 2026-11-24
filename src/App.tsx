@@ -4,10 +4,15 @@
  */
 
 import { useState } from 'react';
+import { ArrowDown, ArrowRight } from 'lucide-react';
 import { BriefingStage } from './components/BriefingStage';
 import { SimulationStage } from './components/SimulationStage';
 import { OutroStage } from './components/OutroStage';
 import { SimulatorLoader } from './components/SimulatorLoader';
+import {
+  DakgalbiWarriorSprite,
+  MakguksuWarriorSprite,
+} from './components/PixelSprites';
 
 type AppView = 'briefing' | 'simulation' | 'outro';
 
@@ -27,6 +32,13 @@ export default function App() {
     setIsLoadingSim(false);
     setView('simulation');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToBriefing = () => {
+    const el = document.getElementById('briefing-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -100,7 +112,62 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1">
         {view === 'briefing' && (
-          <BriefingStage onStartSimulation={() => enterSimulationWithLoader(false)} />
+          <>
+            {/* Intro Screen that smoothly scrolls into the Briefing section */}
+            <section
+              id="intro-screen"
+              className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 sm:px-6 py-12 border-b-4 border-[#1A1A2E] bg-[#FFFDF8]"
+            >
+              <div className="max-w-4xl w-full pixel-box bg-white p-6 sm:p-10 md:p-12 text-center space-y-8">
+                <div className="flex items-center justify-center gap-6">
+                  <div className="p-3 bg-[#FFF3E0] border-3 border-[#1A1A2E] animate-pixel-bob">
+                    <DakgalbiWarriorSprite className="w-16 h-16 md:w-20 md:h-20" />
+                  </div>
+                  <span className="font-arcade text-sm md:text-base text-[#E53935]">VS</span>
+                  <div className="p-3 bg-[#E3F2FD] border-3 border-[#1A1A2E] animate-pixel-bob">
+                    <MakguksuWarriorSprite className="w-16 h-16 md:w-20 md:h-20" />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="font-pixel text-xs sm:text-sm text-[#E53935]">
+                    한림대학교 문화기획동아리 CON:NECT · 춘천 막국수닭갈비축제 문제 개선 프로젝트
+                  </p>
+                  <h1 className="font-pixel text-3xl sm:text-4xl md:text-5xl text-[#1A1A2E] leading-tight text-balance">
+                    막국수 용사,
+                    <br className="sm:hidden" /> 닭갈비 왕국을 구해라
+                  </h1>
+                  <p className="text-sm sm:text-base text-[#1A1A2E]/80 max-w-2xl mx-auto leading-relaxed">
+                    2025년 30만 명에서 2026년 50만 명 규모로 급성장하는 춘천 막국수닭갈비축제.
+                    현장 답사로 발굴한 4대 문제점과, 이를 해결하기 위한 개선 축제를 직접 체험해 보세요.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                  <button
+                    type="button"
+                    onClick={scrollToBriefing}
+                    className="pixel-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#1E88E5] hover:bg-[#1565C0] text-white font-pixel text-sm md:text-base cursor-pointer whitespace-nowrap"
+                  >
+                    <span>기획 배경 및 문제점 보기</span>
+                    <ArrowDown className="w-4 h-4" aria-hidden="true" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => enterSimulationWithLoader(false)}
+                    className="pixel-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#FF5722] hover:bg-[#E53935] text-white font-pixel text-sm md:text-base cursor-pointer whitespace-nowrap"
+                  >
+                    <span>가상 축제 바로 체험하기</span>
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Briefing: Background & 4 Field Problems -> Full-Screen Simulator Gate */}
+            <BriefingStage onStartSimulation={() => enterSimulationWithLoader(false)} />
+          </>
         )}
 
         {view === 'simulation' && (

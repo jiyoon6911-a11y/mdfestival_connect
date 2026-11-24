@@ -6,6 +6,7 @@ interface GameProgressWalkerProps {
   currentStep: number;
   completedSteps: number[];
   selectedTeam: HeroTeam;
+  isWalking: boolean;
   onSelectStep: (step: number) => void;
   onToggleTeam: () => void;
 }
@@ -14,6 +15,7 @@ export function GameProgressWalker({
   currentStep,
   completedSteps,
   selectedTeam,
+  isWalking,
   onSelectStep,
   onToggleTeam,
 }: GameProgressWalkerProps) {
@@ -38,36 +40,43 @@ export function GameProgressWalker({
             {selectedTeam === 'dakgalbi' ? '🍗 닭갈비 용사' : '🍜 막국수 용사'} (전환 ⇄)
           </button>
           <span className="font-pixel text-xs text-[#A5D6A7] font-tabular">
-            {completedSteps.length} / {GAME_STEPS.length} 체험 완료
+            {completedSteps.length} / {GAME_STEPS.length} 도장 완료
           </span>
         </div>
       </div>
 
       <div className="p-4 sm:p-5 space-y-4">
         {/* In-Venue Warrior Dialogue */}
-        <div className="px-3.5 py-2 bg-[#111122] border-2 border-[#F5E6D3]/30 text-xs sm:text-sm text-white flex items-center gap-2">
-          <span className="font-pixel text-[#FFD54F] shrink-0">현장 안내 ▶</span>
-          <span>“{activeStepMeta.walkerLine}”</span>
+        <div className="px-3.5 py-2 bg-[#111122] border-2 border-[#F5E6D3]/30 text-xs sm:text-sm text-white flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="font-pixel text-[#FFD54F] shrink-0">현장 안내 ▶</span>
+            <span>“{activeStepMeta.walkerLine}”</span>
+          </div>
+          {isWalking && (
+            <span className="font-pixel text-[11px] text-[#FF8A65] shrink-0">
+              거점 이동 중...
+            </span>
+          )}
         </div>
 
-        {/* Walking Pixel Character Along Festival Promenade */}
+        {/* Walking Pixel Character Along Festival Promenade (GATE A -> GATE B) */}
         <div className="pt-11 pb-1 relative">
-          {/* Festival Lantern Dots along the top */}
-          <div className="absolute top-0 inset-x-4 flex justify-between text-[10px] opacity-80 pointer-events-none select-none">
-            <span>🏮</span>
-            <span>🚩</span>
-            <span>🏮</span>
-            <span>🎪</span>
-            <span>🏮</span>
-            <span>🎆</span>
+          {/* Waypoint Zone Markers (GATE A / GATE B corridor) */}
+          <div className="absolute top-0 inset-x-4 flex justify-between text-[10px] font-pixel opacity-85 pointer-events-none select-none">
+            <span className="text-[#FF8A65]">GATE A · 석사천 방면</span>
+            <span className="text-[#90CAF9]">GATE B · 공지천 방면</span>
           </div>
 
-          {/* Walking Character Sprite */}
+          {/* Walking Character Sprite with CSS Keyframe Walk Cycle */}
           <div
-            className="absolute top-1 -translate-x-1/2 transition-all duration-500 ease-out z-10 pointer-events-none"
+            className="absolute top-2 -translate-x-1/2 transition-[left] duration-650 ease-in-out z-10 pointer-events-none"
             style={{ left: `${walkerPercent}%` }}
           >
-            <div className="animate-pixel-bob drop-shadow-[0_2px_0_#000]">
+            <div
+              className={`drop-shadow-[0_2px_0_#000] ${
+                isWalking ? 'animate-avatar-walk' : 'animate-pixel-bob'
+              }`}
+            >
               {selectedTeam === 'dakgalbi' ? (
                 <DakgalbiWarriorSprite className="w-11 h-11" />
               ) : (
@@ -79,7 +88,7 @@ export function GameProgressWalker({
           {/* Festival Street Road Line */}
           <div className="relative h-2.5 bg-[#2B2B4B] border border-[#F5E6D3]/30 mx-4 sm:mx-8">
             <div
-              className="h-full bg-[#FF5722] transition-all duration-500"
+              className="h-full bg-[#FF5722] transition-all duration-650 ease-in-out"
               style={{
                 width: `${((currentStep - 1) / (GAME_STEPS.length - 1)) * 100}%`,
               }}
