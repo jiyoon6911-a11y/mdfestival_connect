@@ -1,6 +1,6 @@
 // 16-bit Retro Chiptune Web Audio Synthesizer (Zero external assets required)
 
-type SfxType = 'click' | 'walk' | 'stamp' | 'victory';
+type SfxType = 'click' | 'walk' | 'stamp' | 'victory' | 'firework';
 
 class RetroSoundEngine {
   private ctx: AudioContext | null = null;
@@ -166,6 +166,17 @@ class RetroSoundEngine {
         this.playTone(f, d, 'square', 0.065, t);
         this.playTone(f * 0.5, d, 'triangle', 0.05, t);
       });
+      return;
+    }
+
+    if (type === 'firework') {
+      // Rising whistle + crisp retro burst chord
+      this.playTone(340, 0.06, 'triangle', 0.04, 0);
+      this.playTone(520, 0.06, 'triangle', 0.04, 0.05);
+      this.playTone(760, 0.06, 'triangle', 0.04, 0.1);
+      this.playTone(1046.5, 0.14, 'square', 0.05, 0.17);
+      this.playTone(1318.5, 0.16, 'square', 0.045, 0.21);
+      this.playTone(1567.98, 0.18, 'triangle', 0.05, 0.25);
     }
   }
 }
