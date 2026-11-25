@@ -503,7 +503,7 @@ export const WEEKEND_FESTIVAL_SCHEDULE: FestivalDaySchedule[] = [
         isLocalSupported: true,
       },
       { time: '17:00 - 18:00', artist: '산보', note: '-' },
-      { time: '18:00 - 19:00', artist: '폐막식', note: '공식 폐막 세리머니', isClosing: true },
+      { time: '18:00 - 19:00', artist: '폐막식', note: '-', isClosing: true },
       { time: '19:00 - 20:00', artist: '소란', note: '-' },
       { time: '20:00 - 21:00', artist: '10CM', note: '-' },
     ],
@@ -512,8 +512,8 @@ export const WEEKEND_FESTIVAL_SCHEDULE: FestivalDaySchedule[] = [
 
 export const GOODS_RELEASE_NOTICE = {
   period: '12월 1일 ~ 12월 3일 오프라인 현장 DP',
-  headline: 'CON:NECT 공식 굿즈는 12/1 ~ 12/3 오프라인 축제 현장에 DP(전시)됩니다!',
-  desc: 'TEAM 닭갈비 vs TEAM 막국수 라이벌 콘셉트와 〈막닭.ZIP〉 리워드 파츠를 포함한 공식 굿즈 실물은 12월 1일부터 3일까지 오프라인 현장 부스에 직접 DP해 두어 누구나 실물을 확인하고 만날 수 있습니다.',
+  headline: 'CON:NECT가 기획한 축제 굿즈는 12/1 ~ 12/3 오프라인 축제 현장에 DP(전시)됩니다!',
+  desc: 'TEAM 닭갈비 vs TEAM 막국수 라이벌 콘셉트와 〈막닭.ZIP〉 리워드 파츠를 포함한 CON:NECT가 기획한 축제 굿즈 실물은 12월 1일부터 3일까지 오프라인 현장 부스에 직접 DP해 두어 누구나 실물을 확인하고 만날 수 있습니다.',
 };
 
 export const FINAL_IMPACTS = [
@@ -533,7 +533,7 @@ export const FINAL_IMPACTS = [
     num: '03',
     title: '기업 상생 & 춘천 대표 로컬 축제 자산 확립',
     summary:
-      '〈풀무원 스테이지〉 네이밍 스폰서십과 강원음악창작소 로컬 뮤지션 오프닝 배치, 시민×가게 페어 〈막닭 소스 대첩〉(총 상금 약 500만 원), 〈막닭.ZIP〉, 12/1~12/3 오프라인 현장 DP 공식 굿즈로 자생적 축제 모델을 완성합니다.',
+      '〈풀무원 스테이지〉 네이밍 스폰서십과 강원음악창작소 로컬 뮤지션 오프닝 배치, 시민×가게 페어 〈막닭 소스 대첩〉(총 상금 약 500만 원), 〈막닭.ZIP〉, 12/1~12/3 오프라인 현장 DP CON:NECT가 기획한 축제 굿즈로 자생적 축제 모델을 완성합니다.',
   },
 ];
 

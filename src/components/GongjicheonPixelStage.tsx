@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 interface GongjicheonPixelStageProps {
@@ -8,13 +7,10 @@ interface GongjicheonPixelStageProps {
   compact?: boolean;
 }
 
-type PixelSceneType = 'contest' | 'concert' | 'lawn';
-
 /**
  * 공지천 조각공원 · 잔디광장 픽셀 현장
- * - 낮 요리대회 「막닭 소스 대첩」: 화창한 낮, 셰프·시민 페어의 불판 조리 & 김·불꽃 & 심사·관람 애니메이션
- * - 밤 밴드 공연 〈닭같이 막 즐겨〉 × 〈풀무원 스테이지〉: 별빛 밤, 4인조 풀 밴드 라이브 & 야광봉 흔드는 관객 애니메이션
- * - 공지천 조각공원 광장: 잔디광장에서 돗자리 피크닉·산책·놀이를 즐기는 현장 애니메이션
+ * - mode='wedThu': 낮 요리대회 「막닭 소스 대첩」 — 셰프·시민 페어의 불판 조리 & 김·불꽃 & 심사·관람 애니메이션
+ * - mode='friSun': 밤 밴드 공연 〈닭같이 막 즐겨〉 × 〈풀무원 스테이지〉 — 4인조 풀 밴드 라이브 & 야광봉 관객 애니메이션
  */
 export function GongjicheonPixelStage({
   mode = 'wedThu',
@@ -22,62 +18,32 @@ export function GongjicheonPixelStage({
   spiceActive = false,
   compact = false,
 }: GongjicheonPixelStageProps) {
-  const [scene, setScene] = useState<PixelSceneType>(mode === 'wedThu' ? 'contest' : 'concert');
-
-  useEffect(() => {
-    setScene(mode === 'wedThu' ? 'contest' : 'concert');
-  }, [mode]);
+  const isContest = mode === 'wedThu';
 
   return (
     <div className="border-3 border-[#1A1A2E] bg-[#1A1A2E] text-[#F5E6D3] overflow-hidden">
-      {/* Header Switcher */}
-      <div className="px-3.5 sm:px-4 py-2.5 bg-[#262646] border-b-2 border-[#F5E6D3]/20 flex flex-col lg:flex-row lg:items-center justify-between gap-2">
+      {/* Header Status Bar (Synced automatically with 수·목 / 금·토·일 selection below) */}
+      <div className="px-3.5 sm:px-4 py-2.5 bg-[#262646] border-b-2 border-[#F5E6D3]/20 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 font-pixel text-xs text-[#FFD54F]">
           <MapPin className="w-3.5 h-3.5 text-[#FF5722] shrink-0" aria-hidden="true" />
           <span>공지천 조각공원 픽셀 현장</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
-          <button
-            type="button"
-            onClick={() => setScene('contest')}
-            className={`px-2.5 py-1 text-[11px] font-pixel border cursor-pointer ${
-              scene === 'contest'
-                ? 'bg-[#FF5722] text-white border-white'
-                : 'bg-[#1A1A2E] text-[#F5E6D3]/80 border-[#F5E6D3]/30'
-            }`}
-          >
-            ① 낮 · 요리대회 「막닭 소스 대첩」
-          </button>
-          <button
-            type="button"
-            onClick={() => setScene('concert')}
-            className={`px-2.5 py-1 text-[11px] font-pixel border cursor-pointer ${
-              scene === 'concert'
-                ? 'bg-[#1E88E5] text-white border-white'
-                : 'bg-[#1A1A2E] text-[#F5E6D3]/80 border-[#F5E6D3]/30'
-            }`}
-          >
-            ② 밤 · 밴드 공연 「풀무원 스테이지」
-          </button>
-          <button
-            type="button"
-            onClick={() => setScene('lawn')}
-            className={`px-2.5 py-1 text-[11px] font-pixel border cursor-pointer ${
-              scene === 'lawn'
-                ? 'bg-[#2E7D32] text-white border-white'
-                : 'bg-[#1A1A2E] text-[#F5E6D3]/80 border-[#F5E6D3]/30'
-            }`}
-          >
-            ③ 낮 · 조각공원 잔디광장
-          </button>
-        </div>
+        <span
+          className={`px-2.5 py-1 text-[11px] font-pixel border border-white/70 ${
+            isContest ? 'bg-[#FF5722] text-white' : 'bg-[#1E88E5] text-white'
+          }`}
+        >
+          {isContest
+            ? '☀️ 낮 현장 · 요리대회 「막닭 소스 대첩」'
+            : '🌙 밤 현장 · 〈닭같이 막 즐겨〉 × 풀무원 스테이지'}
+        </span>
       </div>
 
       {/* Pixel Art Venue Canvas */}
       <div className="grid grid-cols-1 lg:grid-cols-12">
         <div className="lg:col-span-7 bg-[#0F1224] relative overflow-hidden border-b-2 lg:border-b-0 lg:border-r-2 border-[#F5E6D3]/20">
-          {scene === 'contest' && (
+          {isContest ? (
             /* Scene 1: 낮 요리대회 「막닭 소스 대첩」 — 햇살 아래 셰프들이 모락모락 불판 요리하고 시민들이 시식·응원하는 낮 현장 */
             <svg
               viewBox="0 0 160 96"
@@ -239,9 +205,7 @@ export function GongjicheonPixelStage({
                 <rect x="140" y="81" width="2" height="3" fill="#FFD54F" />
               </g>
             </svg>
-          )}
-
-          {scene === 'concert' && (
+          ) : (
             /* Scene 2: 밤 밴드 공연 〈닭같이 막 즐겨〉 × 〈풀무원 스테이지〉 — 야간 조명, 4인조 풀 밴드, 야광봉 흔드는 관객! */
             <svg
               viewBox="0 0 160 96"
@@ -434,131 +398,12 @@ export function GongjicheonPixelStage({
             </svg>
           )}
 
-          {scene === 'lawn' && (
-            /* Scene 3: 공지천 조각공원 잔디광장 — 사람들이 걸어다니고 뛰며 노는 생동감 있는 픽셀 아트 */
-            <svg
-              viewBox="0 0 160 96"
-              shapeRendering="crispEdges"
-              className={`w-full block ${compact ? 'h-52 sm:h-60' : 'h-56 sm:h-72'}`}
-              role="img"
-              aria-label="공지천 조각공원에서 관람객들이 축제와 놀이를 즐기는 픽셀 아트"
-            >
-              <rect x="0" y="0" width="160" height="36" fill="#CFE8F7" />
-              <rect x="0" y="24" width="160" height="12" fill="#E3F2FD" />
-
-              <g className="animate-park-stroll-a">
-                <rect x="14" y="6" width="14" height="4" fill="#FFFFFF" />
-                <rect x="17" y="4" width="8" height="2" fill="#FFFFFF" />
-              </g>
-
-              {/* 공원 나무 라인 */}
-              <rect x="14" y="18" width="4" height="26" fill="#5D4037" />
-              <rect x="40" y="20" width="4" height="24" fill="#5D4037" />
-              <rect x="64" y="24" width="3" height="20" fill="#6D4C41" />
-              <rect x="96" y="18" width="4" height="26" fill="#6D4C41" />
-              <rect x="130" y="22" width="4" height="22" fill="#5D4037" />
-
-              <rect x="0" y="6" width="34" height="24" fill="#2E7D32" />
-              <rect x="4" y="2" width="24" height="18" fill="#388E3C" />
-              <rect x="28" y="10" width="28" height="22" fill="#1B5E20" />
-              <rect x="50" y="18" width="18" height="14" fill="#8D3B2E" />
-              <rect x="68" y="14" width="24" height="18" fill="#43A047" />
-              <rect x="86" y="4" width="28" height="24" fill="#558B2F" />
-              <rect x="114" y="16" width="24" height="18" fill="#2E7D32" />
-              <rect x="134" y="8" width="26" height="24" fill="#388E3C" />
-
-              <rect x="0" y="42" width="160" height="4" fill="#A1887F" />
-              <rect x="0" y="45" width="160" height="1" fill="#5D4037" />
-              <rect x="34" y="38" width="14" height="3" fill="#3E2723" />
-              <rect x="94" y="38" width="14" height="3" fill="#3E2723" />
-              <rect x="128" y="38" width="14" height="3" fill="#3E2723" />
-
-              {/* 공지천 조각공원 중앙 돌조각상 */}
-              <rect x="74" y="40" width="10" height="7" fill="#BCAAA4" />
-              <rect x="75" y="35" width="8" height="6" fill="#D7CCC8" />
-              <rect x="76" y="34" width="6" height="2" fill="#BCAAA4" />
-              <rect x="73" y="46" width="12" height="2" fill="#8D6E63" />
-
-              <rect x="0" y="46" width="160" height="50" fill="#689F38" />
-              <rect x="0" y="60" width="160" height="36" fill="#7CB342" />
-              <rect x="0" y="78" width="160" height="18" fill="#8BC34A" />
-
-              {/* 조리·체험 부스 + 김 */}
-              <rect x="8" y="52" width="34" height="14" fill="#FFF8E1" />
-              <rect x="8" y="49" width="34" height="4" fill="#FF5722" />
-              <rect x="9" y="53" width="32" height="2" fill="#1A1A2E" />
-              <rect x="12" y="58" width="8" height="6" fill="#37474F" />
-              <rect x="24" y="58" width="8" height="6" fill="#37474F" />
-
-              <g className="animate-pixel-float">
-                <rect x="15" y="45" width="2" height="3" fill="#FFFFFF" />
-                <rect x="27" y="44" width="2" height="3" fill="#FFE082" />
-                <rect x="33" y="46" width="2" height="2" fill="#FFFFFF" />
-              </g>
-
-              {/* 피크닉 돗자리 */}
-              <rect x="104" y="56" width="22" height="12" fill="#FFF59D" />
-              <rect x="104" y="56" width="22" height="1" fill="#1A1A2E" />
-              <rect x="104" y="67" width="22" height="1" fill="#1A1A2E" />
-              <rect x="130" y="56" width="22" height="12" fill="#90CAF9" />
-              <rect x="130" y="56" width="22" height="1" fill="#1A1A2E" />
-              <rect x="130" y="67" width="22" height="1" fill="#1A1A2E" />
-
-              <g className="animate-pixel-jump-a">
-                <rect x="108" y="57" width="4" height="4" fill="#FFE0B2" />
-                <rect x="108" y="61" width="4" height="4" fill="#FF5722" />
-                <rect x="118" y="57" width="4" height="4" fill="#FFE0B2" />
-                <rect x="118" y="61" width="4" height="4" fill="#1E88E5" />
-                <rect x="113" y="62" width="4" height="3" fill="#E53935" />
-              </g>
-
-              <g className="animate-pixel-jump-b">
-                <rect x="135" y="57" width="4" height="4" fill="#FFE0B2" />
-                <rect x="135" y="61" width="4" height="4" fill="#FFD54F" />
-                <rect x="144" y="57" width="4" height="4" fill="#FFE0B2" />
-                <rect x="144" y="61" width="4" height="4" fill="#E91E63" />
-              </g>
-
-              {/* 산책하는 사람들 */}
-              <g className="animate-park-stroll-a">
-                <rect x="46" y="62" width="4" height="4" fill="#FFE0B2" />
-                <rect x="46" y="66" width="4" height="5" fill="#FF5722" />
-                <rect x="55" y="63" width="4" height="4" fill="#FFE0B2" />
-                <rect x="55" y="67" width="4" height="4" fill="#1E88E5" />
-              </g>
-
-              <g className="animate-park-stroll-b">
-                <rect x="116" y="76" width="4" height="4" fill="#FFE0B2" />
-                <rect x="116" y="80" width="4" height="5" fill="#2E7D32" />
-                <rect x="125" y="75" width="4" height="4" fill="#FFE0B2" />
-                <rect x="125" y="79" width="4" height="6" fill="#FF8A65" />
-              </g>
-
-              {/* 뛰노는 관람객 */}
-              <g className="animate-pixel-jump-a">
-                <rect x="74" y="68" width="5" height="5" fill="#FFE0B2" />
-                <rect x="74" y="73" width="5" height="5" fill="#FFD54F" />
-                <rect x="72" y="70" width="2" height="4" fill="#FFE0B2" />
-                <rect x="79" y="70" width="2" height="4" fill="#FFE0B2" />
-              </g>
-
-              <g className="animate-pixel-jump-b">
-                <rect x="86" y="70" width="5" height="5" fill="#FFE0B2" />
-                <rect x="86" y="75" width="5" height="5" fill="#E91E63" />
-                <rect x="84" y="71" width="2" height="4" fill="#FFE0B2" />
-                <rect x="91" y="71" width="2" height="4" fill="#FFE0B2" />
-              </g>
-            </svg>
-          )}
-
           {/* Bottom Pixel Caption Strip */}
           <div className="px-3 py-2 bg-[#13142B] border-t-2 border-[#F5E6D3]/20 flex flex-wrap items-center justify-between gap-2 text-[11px] font-pixel">
             <span className="text-[#FFD54F]">
-              {scene === 'contest'
+              {isContest
                 ? '낮 현장 · 셰프×시민 페어 「막닭 소스 대첩」 불판 조리 경연'
-                : scene === 'concert'
-                  ? '밤 현장 · 〈닭같이 막 즐겨〉 × 〈풀무원 스테이지〉 밴드 & 야광봉'
-                  : '공지천 조각공원 · 먹고 걷고 뛰며 즐기는 잔디광장'}
+                : '밤 현장 · 〈닭같이 막 즐겨〉 × 〈풀무원 스테이지〉 밴드 & 야광봉'}
             </span>
             <span className="text-[#90CAF9]">LIVE PIXEL ANIMATION</span>
           </div>
@@ -569,25 +414,21 @@ export function GongjicheonPixelStage({
           <div className="space-y-2.5">
             <div className="font-pixel text-xs text-[#90CAF9]">공지천 조각공원 현장 구현</div>
             <h4 className="font-pixel text-base sm:text-lg text-white break-keep">
-              {scene === 'contest'
+              {isContest
                 ? '낮 요리대회 · 「막닭 소스 대첩」'
-                : scene === 'concert'
-                  ? '밤 밴드 공연 · 「풀무원 스테이지」'
-                  : '공지천 조각공원 · 잔디광장 축제 풍경'}
+                : '밤 밴드 공연 · 「풀무원 스테이지」'}
             </h4>
             <p className="text-xs sm:text-sm text-[#F5E6D3]/85 leading-relaxed break-keep">
-              {scene === 'contest'
+              {isContest
                 ? '화창한 낮 공지천 야외 조리 무대에서 셰프 모자를 쓴 사장님과 시민 페어가 불판을 달구며 창의적인 닭갈비 소스 요리를 선보이고, 심사위원과 관객이 시식·투표로 함께 즐깁니다.'
-                : scene === 'concert'
-                  ? '별빛 아래 대형 지상형 〈풀무원 스테이지〉에서 4인조 라이브 밴드가 연주하고, 공지천 잔디광장을 가득 메운 관객들이 화려한 야광봉을 흔들며 스탠딩과 피크닉을 오가며 떼창합니다.'
-                  : '석사천 산책로의 병목에서 벗어나 공지천 잔디광장·분수대·조각공원을 배경으로 관람객들이 돗자리에 앉아 음식을 나누고 걸어다니며 축제를 즐기는 현장입니다.'}
+                : '별빛 아래 대형 지상형 〈풀무원 스테이지〉에서 4인조 라이브 밴드가 연주하고, 공지천 잔디광장을 가득 메운 관객들이 화려한 야광봉을 흔들며 스탠딩과 피크닉을 오가며 떼창합니다.'}
             </p>
           </div>
 
           <div className="p-3 bg-[#262646] border-2 border-[#FFD54F]/60 text-xs space-y-1">
-            <div className="font-pixel text-[#FFD54F]">공식 굿즈 오프라인 현장 DP</div>
+            <div className="font-pixel text-[#FFD54F]">CON:NECT가 기획한 축제 굿즈 오프라인 현장 DP</div>
             <p className="text-[#F5E6D3]/90">
-              공식 굿즈 실물은 <strong>12월 1일 ~ 12월 3일 오프라인 현장 부스</strong>에 DP(전시)됩니다!
+              CON:NECT가 기획한 축제 굿즈 실물은 <strong>12월 1일 ~ 12월 3일 오프라인 현장 부스</strong>에 DP(전시)됩니다!
             </p>
           </div>
         </div>

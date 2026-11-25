@@ -537,7 +537,7 @@ export function Step6StageAndPassport({
         {/* Final Complete CTA */}
         <div className="pt-3 border-t-2 border-[#1A1A2E] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <span className="text-xs text-[#1A1A2E]/75 break-keep">
-            공지천 무대 프로그램과 미식 여권을 모두 둘러보셨다면 기대효과와 그린존 피크닉 정책·오프라인 굿즈 DP를 확인해 보세요!
+            공지천 무대 프로그램과 미식 여권을 모두 둘러보셨다면 기대효과와 CON:NECT가 기획한 축제 굿즈 오프라인 DP를 확인해 보세요!
           </span>
           <button
             type="button"
