@@ -1,11 +1,84 @@
 import React from 'react';
 
+export type FoodHoldType = 'none' | 'dakgalbi' | 'makguksu' | 'set';
+
 interface SpriteProps {
   className?: string;
+  holdingFood?: FoodHoldType;
+  holdingMap?: boolean;
+  holdingLightstick?: boolean;
+  isSitting?: boolean;
+}
+
+function PixelAccessoryOverlay({
+  holdingFood = 'none',
+  holdingMap = false,
+  holdingLightstick = false,
+}: Pick<SpriteProps, 'holdingFood' | 'holdingMap' | 'holdingLightstick'>) {
+  return (
+    <>
+      {/* 손에 든 탐험지도 */}
+      {holdingMap && (
+        <>
+          <rect x="0" y="7" width="4" height="4" fill="#FFF8E1" />
+          <rect x="0" y="7" width="4" height="1" fill="#8D6E63" />
+          <rect x="0" y="10" width="4" height="1" fill="#8D6E63" />
+          <rect x="1" y="8" width="2" height="1" fill="#E53935" />
+          <rect x="2" y="9" width="1" height="1" fill="#1E88E5" />
+        </>
+      )}
+
+      {/* 손에 든 LED 응원봉 */}
+      {holdingLightstick && (
+        <>
+          <rect x="13" y="2" width="3" height="3" fill="#FFD54F" />
+          <rect x="14" y="3" width="1" height="1" fill="#FF5722" />
+          <rect x="14" y="5" width="1" height="5" fill="#1A1A2E" />
+        </>
+      )}
+
+      {/* 손에 든 음식 트레이 (닭갈비 컵 / 막국수 그릇 / 막닭 콤보) */}
+      {holdingFood === 'dakgalbi' && (
+        <>
+          {/* 빨간 닭갈비 컵 */}
+          <rect x="11" y="8" width="5" height="4" fill="#FFFFFF" />
+          <rect x="11" y="8" width="5" height="1" fill="#1A1A2E" />
+          <rect x="12" y="6" width="3" height="2" fill="#E53935" />
+          <rect x="12" y="7" width="1" height="1" fill="#FFD54F" />
+          <rect x="14" y="6" width="1" height="1" fill="#FF8A65" />
+        </>
+      )}
+      {holdingFood === 'makguksu' && (
+        <>
+          {/* 파란 막국수 사발 */}
+          <rect x="11" y="9" width="5" height="3" fill="#1E88E5" />
+          <rect x="11" y="8" width="5" height="1" fill="#F5E6D3" />
+          <rect x="12" y="7" width="3" height="1" fill="#D7CCC8" />
+          <rect x="13" y="6" width="1" height="1" fill="#FFFFFF" />
+        </>
+      )}
+      {holdingFood === 'set' && (
+        <>
+          {/* 닭갈비 + 막국수 막닭 콤보 쟁반 */}
+          <rect x="10" y="10" width="6" height="2" fill="#37474F" />
+          <rect x="10" y="7" width="3" height="3" fill="#E53935" />
+          <rect x="11" y="6" width="1" height="1" fill="#FFD54F" />
+          <rect x="13" y="7" width="3" height="3" fill="#1E88E5" />
+          <rect x="14" y="6" width="1" height="1" fill="#F5E6D3" />
+        </>
+      )}
+    </>
+  );
 }
 
 /** 열정파 닭갈비 용사 16비트 픽셀 스프라이트 */
-export function DakgalbiWarriorSprite({ className = 'w-16 h-16' }: SpriteProps) {
+export function DakgalbiWarriorSprite({
+  className = 'w-16 h-16',
+  holdingFood = 'none',
+  holdingMap = false,
+  holdingLightstick = false,
+  isSitting = false,
+}: SpriteProps) {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -31,23 +104,52 @@ export function DakgalbiWarriorSprite({ className = 'w-16 h-16' }: SpriteProps) 
       <rect x="5" y="9" width="6" height="2" fill="#E53935" />
       <rect x="3" y="8" width="1" height="4" fill="#1A1A2E" />
       <rect x="12" y="8" width="1" height="4" fill="#1A1A2E" />
-      {/* 철판 방패 */}
-      <rect x="1" y="7" width="3" height="5" fill="#37474F" />
-      <rect x="2" y="8" width="1" height="3" fill="#FFAB91" />
-      {/* 집게 검 */}
-      <rect x="13" y="5" width="1" height="6" fill="#B0BEC5" />
-      <rect x="13" y="10" width="2" height="1" fill="#1A1A2E" />
-      {/* 부츠 */}
-      <rect x="4" y="12" width="3" height="2" fill="#1A1A2E" />
-      <rect x="9" y="12" width="3" height="2" fill="#1A1A2E" />
-      <rect x="4" y="14" width="3" height="1" fill="#FF5722" />
-      <rect x="9" y="14" width="3" height="1" fill="#FF5722" />
+      {/* 기본 무기/방패 (소지품이 없을 때) */}
+      {!holdingMap && (
+        <>
+          <rect x="1" y="7" width="3" height="5" fill="#37474F" />
+          <rect x="2" y="8" width="1" height="3" fill="#FFAB91" />
+        </>
+      )}
+      {holdingFood === 'none' && !holdingLightstick && (
+        <>
+          <rect x="13" y="5" width="1" height="6" fill="#B0BEC5" />
+          <rect x="13" y="10" width="2" height="1" fill="#1A1A2E" />
+        </>
+      )}
+      {/* 부츠 (착석 시 접힌 다리 포즈) */}
+      {isSitting ? (
+        <>
+          <rect x="3" y="12" width="4" height="2" fill="#1A1A2E" />
+          <rect x="9" y="12" width="4" height="2" fill="#1A1A2E" />
+          <rect x="2" y="13" width="2" height="1" fill="#FF5722" />
+          <rect x="12" y="13" width="2" height="1" fill="#FF5722" />
+        </>
+      ) : (
+        <>
+          <rect x="4" y="12" width="3" height="2" fill="#1A1A2E" />
+          <rect x="9" y="12" width="3" height="2" fill="#1A1A2E" />
+          <rect x="4" y="14" width="3" height="1" fill="#FF5722" />
+          <rect x="9" y="14" width="3" height="1" fill="#FF5722" />
+        </>
+      )}
+      <PixelAccessoryOverlay
+        holdingFood={holdingFood}
+        holdingMap={holdingMap}
+        holdingLightstick={holdingLightstick}
+      />
     </svg>
   );
 }
 
 /** 쿨해파 막국수 용사 16비트 픽셀 스프라이트 */
-export function MakguksuWarriorSprite({ className = 'w-16 h-16' }: SpriteProps) {
+export function MakguksuWarriorSprite({
+  className = 'w-16 h-16',
+  holdingFood = 'none',
+  holdingMap = false,
+  holdingLightstick = false,
+  isSitting = false,
+}: SpriteProps) {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -73,18 +175,41 @@ export function MakguksuWarriorSprite({ className = 'w-16 h-16' }: SpriteProps) 
       <rect x="6" y="8" width="4" height="4" fill="#F5E6D3" />
       <rect x="3" y="8" width="1" height="4" fill="#1A1A2E" />
       <rect x="12" y="8" width="1" height="4" fill="#1A1A2E" />
-      {/* 메밀 그릇 방패 */}
-      <rect x="1" y="8" width="3" height="3" fill="#8D6E63" />
-      <rect x="1" y="7" width="3" height="1" fill="#F5E6D3" />
-      {/* 동치미 얼음 검 */}
-      <rect x="13" y="4" width="1" height="7" fill="#90CAF9" />
-      <rect x="14" y="5" width="1" height="4" fill="#E3F2FD" />
-      <rect x="13" y="11" width="2" height="1" fill="#1A1A2E" />
-      {/* 부츠 */}
-      <rect x="4" y="12" width="3" height="2" fill="#1A1A2E" />
-      <rect x="9" y="12" width="3" height="2" fill="#1A1A2E" />
-      <rect x="4" y="14" width="3" height="1" fill="#1E88E5" />
-      <rect x="9" y="14" width="3" height="1" fill="#1E88E5" />
+      {/* 기본 방패/검 (소지품이 없을 때) */}
+      {!holdingMap && (
+        <>
+          <rect x="1" y="8" width="3" height="3" fill="#8D6E63" />
+          <rect x="1" y="7" width="3" height="1" fill="#F5E6D3" />
+        </>
+      )}
+      {holdingFood === 'none' && !holdingLightstick && (
+        <>
+          <rect x="13" y="4" width="1" height="7" fill="#90CAF9" />
+          <rect x="14" y="5" width="1" height="4" fill="#E3F2FD" />
+          <rect x="13" y="11" width="2" height="1" fill="#1A1A2E" />
+        </>
+      )}
+      {/* 부츠 (착석 시 접힌 다리 포즈) */}
+      {isSitting ? (
+        <>
+          <rect x="3" y="12" width="4" height="2" fill="#1A1A2E" />
+          <rect x="9" y="12" width="4" height="2" fill="#1A1A2E" />
+          <rect x="2" y="13" width="2" height="1" fill="#1E88E5" />
+          <rect x="12" y="13" width="2" height="1" fill="#1E88E5" />
+        </>
+      ) : (
+        <>
+          <rect x="4" y="12" width="3" height="2" fill="#1A1A2E" />
+          <rect x="9" y="12" width="3" height="2" fill="#1A1A2E" />
+          <rect x="4" y="14" width="3" height="1" fill="#1E88E5" />
+          <rect x="9" y="14" width="3" height="1" fill="#1E88E5" />
+        </>
+      )}
+      <PixelAccessoryOverlay
+        holdingFood={holdingFood}
+        holdingMap={holdingMap}
+        holdingLightstick={holdingLightstick}
+      />
     </svg>
   );
 }

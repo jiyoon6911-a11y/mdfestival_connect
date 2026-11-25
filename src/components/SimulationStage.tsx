@@ -3,6 +3,7 @@ import { Award, X } from 'lucide-react';
 import { GAME_STEPS, type HeroTeam } from '../data/festivalData';
 import { soundEngine } from '../utils/soundEngine';
 import { GameProgressWalker } from './GameProgressWalker';
+import { type FoodHoldType } from './PixelSprites';
 import { Step1Decorate } from './game/Step1Decorate';
 import { Step2ExplorerMap } from './game/Step2ExplorerMap';
 import { Step3TasteKiosk } from './game/Step3TasteKiosk';
@@ -25,6 +26,8 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [assignedSeat, setAssignedSeat] = useState<string | null>(null);
+  const [orderedFood, setOrderedFood] = useState<FoodHoldType>('none');
+  const [hasEatenInPicnic, setHasEatenInPicnic] = useState(false);
   const [isWalking, setIsWalking] = useState(false);
   const [stampPopup, setStampPopup] = useState<StampPopupData | null>(null);
   const walkTimerRef = useRef<number | null>(null);
@@ -94,6 +97,14 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
     triggerWalkAndStamp(null, step);
   };
 
+  // Hero visibly carries ordered food until finished eating in Picnic Zone
+  const activeHeldFood: FoodHoldType =
+    !hasEatenInPicnic && orderedFood !== 'none'
+      ? orderedFood
+      : currentStep === 4 && !hasEatenInPicnic
+        ? 'set'
+        : 'none';
+
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8 space-y-6 relative">
       {/* Top In-Venue Walking Character Promenade Track (GATE A <-> GATE B) */}
@@ -102,6 +113,9 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
         completedSteps={completedSteps}
         selectedTeam={selectedTeam}
         isWalking={isWalking}
+        holdingFood={activeHeldFood}
+        holdingMap={currentStep === 2 || completedSteps.includes(2)}
+        holdingLightstick={currentStep === 6 || completedSteps.includes(6)}
         onSelectStep={handleSelectStep}
         onToggleTeam={() =>
           setSelectedTeam((prev) => (prev === 'dakgalbi' ? 'makguksu' : 'dakgalbi'))
@@ -113,7 +127,7 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
         <div
           role="status"
           aria-live="polite"
-          className="fixed inset-x-4 bottom-6 sm:inset-x-auto sm:right-6 z-50 max-w-sm ml-auto animate-stamp-popup"
+          className="fixed inset-x-3 bottom-4 sm:inset-x-auto sm:right-6 z-50 max-w-sm ml-auto animate-stamp-popup"
         >
           <div className="pixel-box bg-[#FFF8E1] p-4 flex items-start gap-3.5">
             <div className="p-2.5 bg-[#FF5722] border-2 border-[#1A1A2E] text-white shrink-0 animate-stamp">
@@ -151,6 +165,7 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
       {currentStep === 2 && (
         <Step2ExplorerMap
           completed={completedSteps.includes(2)}
+          selectedTeam={selectedTeam}
           onCompleteAndNext={() => completeStepAndGo(2, 3)}
         />
       )}
@@ -158,8 +173,14 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
       {currentStep === 3 && (
         <Step3TasteKiosk
           completed={completedSteps.includes(3)}
+          selectedTeam={selectedTeam}
           assignedSeat={assignedSeat}
-          onAssignSeat={(seat) => setAssignedSeat(seat)}
+          orderedFood={orderedFood}
+          onAssignOrder={(seat, foodType) => {
+            setAssignedSeat(seat);
+            setOrderedFood(foodType);
+            setHasEatenInPicnic(false);
+          }}
           onCompleteAndNext={() => completeStepAndGo(3, 4)}
         />
       )}
@@ -167,8 +188,14 @@ export function SimulationStage({ onFinishToOutro }: SimulationStageProps) {
       {currentStep === 4 && (
         <Step4PicnicZone
           completed={completedSteps.includes(4)}
+          selectedTeam={selectedTeam}
           assignedSeat={assignedSeat}
-          onCompleteAndNext={() => completeStepAndGo(4, 5)}
+          orderedFood={orderedFood !== 'none' ? orderedFood : 'set'}
+          onFinishDining={() => setHasEatenInPicnic(true)}
+          onCompleteAndNext={() => {
+            setHasEatenInPicnic(true);
+            completeStepAndGo(4, 5);
+          }}
         />
       )}
 

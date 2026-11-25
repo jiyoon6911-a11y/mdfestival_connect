@@ -52,15 +52,15 @@ export function PassportBooklet() {
 
   return (
     <div className="space-y-4">
-      {/* Page Index Pills */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      {/* Page Index Pills + Prev/Next */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1.5">
           {PAGES.map((label, idx) => (
             <button
               key={label}
               type="button"
               onClick={() => setPage(idx)}
-              className={`px-2.5 py-1 text-[11px] font-pixel border-2 border-[#1A1A2E] cursor-pointer ${
+              className={`px-2 py-1 text-[11px] font-pixel border-2 border-[#1A1A2E] cursor-pointer ${
                 page === idx ? 'bg-[#1A355B] text-[#FFD54F]' : 'bg-white text-[#1A1A2E]'
               }`}
             >
@@ -69,7 +69,7 @@ export function PassportBooklet() {
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center justify-end gap-1.5 shrink-0">
           <button
             type="button"
             disabled={page === 0}
@@ -92,10 +92,10 @@ export function PassportBooklet() {
       </div>
 
       {/* Booklet Spread Card (Faithful to Uploaded Gourmet Passport Design) */}
-      <div className="border-4 border-[#1A1A2E] shadow-[5px_5px_0px_#1A1A2E] rounded-xl overflow-hidden bg-[#FDF6E9] min-h-[360px] flex flex-col justify-between">
+      <div className="border-4 border-[#1A1A2E] shadow-[5px_5px_0px_#1A1A2E] rounded-xl overflow-hidden bg-[#FDF6E9] min-h-[340px] flex flex-col justify-between">
         {/* Page 0: Cover */}
         {page === 0 && (
-          <div className="flex-1 bg-[#143059] text-white p-6 md:p-10 flex flex-col items-center justify-center text-center space-y-4">
+          <div className="flex-1 bg-[#143059] text-white p-5 sm:p-6 md:p-10 flex flex-col items-center justify-center text-center space-y-4">
             <div className="text-xs font-pixel text-[#90CAF9]">
               춘천시 · K-FOOD 2026 UNIVERSE
             </div>
@@ -104,10 +104,10 @@ export function PassportBooklet() {
               <br />
               닭갈비 막국수 축제
             </h4>
-            <div className="px-5 py-2 bg-[#FFB74D] text-[#1A1A2E] border-3 border-[#1A1A2E] font-pixel text-base sm:text-lg">
+            <div className="px-4 sm:px-5 py-2 bg-[#FFB74D] text-[#1A1A2E] border-3 border-[#1A1A2E] font-pixel text-sm sm:text-lg">
               춘천 미식 여권 (끼끼 여권)
             </div>
-            <p className="text-sm text-[#F5E6D3]">축제에서 한 끼, 춘천에서 한 끼!</p>
+            <p className="text-xs sm:text-sm text-[#F5E6D3]">축제에서 한 끼, 춘천에서 한 끼!</p>
             <button
               type="button"
               onClick={() => setPage(1)}
@@ -120,12 +120,12 @@ export function PassportBooklet() {
 
         {/* Page 1: 01 나의 미식 여권 */}
         {page === 1 && (
-          <div className="p-6 md:p-8 space-y-5 flex-1">
-            <div className="flex items-center justify-between border-b-2 border-[#1A1A2E] pb-2">
-              <span className="font-pixel text-xs px-2 py-0.5 bg-[#FF8A3D] text-white border border-[#1A1A2E]">
+          <div className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-5 flex-1">
+            <div className="flex items-center justify-between gap-2 border-b-2 border-[#1A1A2E] pb-2">
+              <span className="font-pixel text-xs px-2 py-0.5 bg-[#FF8A3D] text-white border border-[#1A1A2E] shrink-0">
                 01
               </span>
-              <span className="text-xs text-[#1A1A2E]/70">오늘, 나는 춘천을 얼마나 맛볼까요?</span>
+              <span className="text-xs text-[#1A1A2E]/70 text-right">오늘, 나는 춘천을 얼마나 맛볼까요?</span>
             </div>
             <h4 className="font-pixel text-xl text-[#143059]">나의 미식 여권</h4>
 

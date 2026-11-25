@@ -50,7 +50,7 @@ export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
         {/* 2. 축제에서 나온 4대 문제점 */}
         <div className="space-y-4">
           <div>
-            <p className="font-pixel text-xs text-[#E53935]">02 · FIELD PROBLEMS (AS-IS)</p>
+            <p className="font-pixel text-xs text-[#E53935]">02 · FIELD PROBLEMS</p>
             <h2 className="font-pixel text-xl md:text-2xl text-[#1A1A2E] mt-1">
               현장 답사에서 발견한 4대 문제점
             </h2>
@@ -92,7 +92,7 @@ export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
       {/* Full-Viewport Transition Screen ("만약 2026 축제가 이렇게 바뀐다면?") */}
       <section
         id="enter-simulator"
-        className="min-h-[calc(100vh-4rem)] bg-[#1A1A2E] text-[#F5E6D3] border-y-4 border-[#FF5722] flex flex-col items-center justify-center px-6 py-16 text-center relative overflow-hidden"
+        className="min-h-[calc(100dvh-6.5rem)] md:min-h-[calc(100vh-4rem)] bg-[#1A1A2E] text-[#F5E6D3] border-y-4 border-[#FF5722] flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 text-center relative overflow-hidden"
       >
         <div
           className="absolute inset-0 opacity-15 pointer-events-none"
@@ -103,26 +103,26 @@ export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
           }}
         />
 
-        <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-          <div className="flex items-center justify-center gap-6">
-            <div className="p-3 bg-[#FF5722]/25 border-2 border-[#FF5722] animate-pixel-bob">
-              <DakgalbiWarriorSprite className="w-16 h-16 md:w-20 md:h-20" />
+        <div className="relative z-10 max-w-3xl mx-auto space-y-6 sm:space-y-8 w-full">
+          <div className="flex items-center justify-center gap-3 sm:gap-6">
+            <div className="p-2.5 sm:p-3 bg-[#FF5722]/25 border-2 border-[#FF5722] animate-pixel-bob">
+              <DakgalbiWarriorSprite className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
             </div>
-            <span className="font-arcade text-sm md:text-base text-[#FFD54F]">QUEST</span>
-            <div className="p-3 bg-[#1E88E5]/25 border-2 border-[#1E88E5] animate-pixel-bob">
-              <MakguksuWarriorSprite className="w-16 h-16 md:w-20 md:h-20" />
+            <span className="font-arcade text-xs sm:text-sm md:text-base text-[#FFD54F]">QUEST</span>
+            <div className="p-2.5 sm:p-3 bg-[#1E88E5]/25 border-2 border-[#1E88E5] animate-pixel-bob">
+              <MakguksuWarriorSprite className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
             </div>
           </div>
 
-          <div className="space-y-4">
-            <p className="font-pixel text-xs sm:text-sm text-[#90CAF9]">
+          <div className="space-y-3 sm:space-y-4">
+            <p className="font-pixel text-xs sm:text-sm text-[#90CAF9] break-keep">
               CON:NECT가 그리는 새로운 춘천 막국수닭갈비축제의 모습은?
             </p>
-            <h2 className="font-pixel text-3xl sm:text-4xl md:text-5xl text-white leading-snug text-balance">
+            <h2 className="font-pixel text-2xl sm:text-4xl md:text-5xl text-white leading-snug text-balance break-keep">
               “만약 2026 춘천 막국수닭갈비축제가
               <br className="hidden sm:block" /> 이렇게 바뀐다면?”
             </h2>
-            <p className="text-sm sm:text-base text-[#F5E6D3]/85 max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-base text-[#F5E6D3]/85 max-w-xl mx-auto leading-relaxed break-keep">
               현실에 반영되기 전, 불편함이 사라진 축제 현장 속으로 직접 걸어 들어가
               사전 꾸미기부터 취향 지도 주문, 피크닉존, 막닭.ZIP, 끼끼 여권까지 체험해 보세요!
             </p>
@@ -131,10 +131,10 @@ export function BriefingStage({ onStartSimulation }: BriefingStageProps) {
           <button
             type="button"
             onClick={onStartSimulation}
-            className="pixel-btn inline-flex items-center gap-2.5 px-8 py-4 bg-[#FF5722] hover:bg-[#E53935] text-white font-pixel text-base md:text-lg cursor-pointer"
+            className="pixel-btn w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 sm:px-8 py-3.5 sm:py-4 bg-[#FF5722] hover:bg-[#E53935] text-white font-pixel text-sm sm:text-base md:text-lg cursor-pointer"
           >
             <span>▶ 가상 축제 시뮬레이터 입장하기</span>
-            <ArrowRight className="w-5 h-5" aria-hidden="true" />
+            <ArrowRight className="w-5 h-5 shrink-0" aria-hidden="true" />
           </button>
         </div>
       </section>
