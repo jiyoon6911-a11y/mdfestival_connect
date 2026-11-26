@@ -1,5 +1,11 @@
+import { useState } from 'react';
 import { RotateCcw, Sparkles, Gift } from 'lucide-react';
-import { FINAL_IMPACTS, GOODS_RELEASE_NOTICE } from '../data/festivalData';
+import {
+  FESTIVAL_GOODS_CATALOG,
+  FINAL_IMPACTS,
+  GOODS_RELEASE_NOTICE,
+  type GoodsTeamFilter,
+} from '../data/festivalData';
 
 function PixelNoSmokingIcon() {
   return (
@@ -122,6 +128,13 @@ interface OutroStageProps {
 }
 
 export function OutroStage({ onRestart, onGoToBriefing }: OutroStageProps) {
+  const [teamFilter, setTeamFilter] = useState<GoodsTeamFilter>('all');
+
+  const filteredGoods =
+    teamFilter === 'all'
+      ? FESTIVAL_GOODS_CATALOG
+      : FESTIVAL_GOODS_CATALOG.filter((item) => item.team === teamFilter);
+
   return (
     <section className="max-w-7xl mx-auto px-3.5 sm:px-6 py-8 sm:py-10 md:py-14 space-y-10 sm:space-y-12">
       {/* Outro Hero Summary */}
@@ -221,13 +234,18 @@ export function OutroStage({ onRestart, onGoToBriefing }: OutroStageProps) {
         </div>
       </section>
 
-      {/* 3. CON:NECT가 기획한 축제 굿즈 12/1 ~ 12/3 오프라인 현장 DP 안내 */}
-      <div className="space-y-4">
-        <div>
-          <p className="font-pixel text-xs text-[#FF5722]">03 · FESTIVAL GOODS OFFLINE DP</p>
-          <h3 className="font-pixel text-xl md:text-2xl text-[#1A1A2E] mt-1">
-            CON:NECT가 기획한 축제 굿즈 오프라인 현장 DP 안내
-          </h3>
+      {/* 3. CON:NECT가 기획한 축제 굿즈 12/1 ~ 12/3 오프라인 현장 DP 안내 & 굿즈 17종 라인업 */}
+      <div className="space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <p className="font-pixel text-xs text-[#FF5722]">03 · FESTIVAL GOODS OFFLINE DP</p>
+            <h3 className="font-pixel text-xl md:text-2xl text-[#1A1A2E] mt-1">
+              CON:NECT가 기획한 축제 굿즈 17종 &amp; 오프라인 DP 안내
+            </h3>
+          </div>
+          <span className="font-pixel text-xs px-3 py-1 bg-[#1A1A2E] text-[#FFD54F] border-2 border-[#1A1A2E] self-start sm:self-auto">
+            총 {FESTIVAL_GOODS_CATALOG.length}종 라인업
+          </span>
         </div>
 
         <div className="pixel-box bg-[#FFF8E1] p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
@@ -235,14 +253,11 @@ export function OutroStage({ onRestart, onGoToBriefing }: OutroStageProps) {
             <div className="p-3.5 bg-[#FF5722] text-white border-3 border-[#1A1A2E] shrink-0">
               <Gift className="w-7 h-7" aria-hidden="true" />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <span className="inline-block font-pixel text-xs px-2.5 py-0.5 bg-[#1A1A2E] text-[#FFD54F]">
                 OFFLINE DP · {GOODS_RELEASE_NOTICE.period}
               </span>
-              <h4 className="font-pixel text-lg sm:text-xl text-[#1A1A2E] break-keep">
-                {GOODS_RELEASE_NOTICE.headline}
-              </h4>
-              <p className="text-xs sm:text-sm text-[#1A1A2E]/80 leading-relaxed break-keep">
+              <p className="text-xs sm:text-sm text-[#1A1A2E]/85 leading-relaxed break-keep">
                 {GOODS_RELEASE_NOTICE.desc}
               </p>
             </div>
@@ -250,6 +265,89 @@ export function OutroStage({ onRestart, onGoToBriefing }: OutroStageProps) {
           <div className="px-4 py-2.5 bg-white border-3 border-[#1A1A2E] font-pixel text-xs sm:text-sm text-[#E53935] shrink-0 self-end md:self-center">
             12/1 — 12/3 오프라인 DP!
           </div>
+        </div>
+
+        {/* Team Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { id: 'all' as const, label: `전체 보기 (${FESTIVAL_GOODS_CATALOG.length})` },
+            {
+              id: 'dakgalbi' as const,
+              label: `🔥 TEAM 닭갈비 (${FESTIVAL_GOODS_CATALOG.filter((g) => g.team === 'dakgalbi').length})`,
+            },
+            {
+              id: 'makguksu' as const,
+              label: `🌊 TEAM 막국수 (${FESTIVAL_GOODS_CATALOG.filter((g) => g.team === 'makguksu').length})`,
+            },
+            {
+              id: 'shared' as const,
+              label: `✨ 막닭 연합 (${FESTIVAL_GOODS_CATALOG.filter((g) => g.team === 'shared').length})`,
+            },
+          ].map((tab) => {
+            const active = teamFilter === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setTeamFilter(tab.id)}
+                className={`pixel-btn px-3.5 py-2 font-pixel text-xs cursor-pointer ${
+                  active
+                    ? 'bg-[#1A1A2E] text-[#FFD54F]'
+                    : 'bg-white text-[#1A1A2E] hover:bg-[#FFFDF8]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 17-item Responsive Goods Gallery Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
+          {filteredGoods.map((item) => {
+            const badgeStyle =
+              item.team === 'dakgalbi'
+                ? 'bg-[#FFF3E0] text-[#E53935]'
+                : item.team === 'makguksu'
+                ? 'bg-[#E3F2FD] text-[#1565C0]'
+                : 'bg-[#F3E5F5] text-[#6A1B9A]';
+
+            return (
+              <div
+                key={item.id}
+                className="bg-white border-3 border-[#1A1A2E] shadow-[4px_4px_0px_#1A1A2E] p-3 sm:p-4 flex flex-col text-left justify-between gap-3"
+              >
+                <div className="w-full space-y-2.5">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <span className={`font-pixel text-[10px] px-2 py-0.5 border border-[#1A1A2E] ${badgeStyle}`}>
+                      {item.teamLabel}
+                    </span>
+                    <span className="text-[10px] font-bold text-[#1A1A2E]/60 truncate">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  <div className="aspect-square w-full bg-[#FFFDF8] border-2 border-[#1A1A2E] flex items-center justify-center p-3 overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      loading="lazy"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1 w-full">
+                  <h4 className="font-pixel text-xs sm:text-sm text-[#1A1A2E] leading-snug break-keep">
+                    {item.name}
+                  </h4>
+                  <p className="text-[11px] text-[#1A1A2E]/75 leading-relaxed break-keep line-clamp-2">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

@@ -512,9 +512,176 @@ export const WEEKEND_FESTIVAL_SCHEDULE: FestivalDaySchedule[] = [
 
 export const GOODS_RELEASE_NOTICE = {
   period: '12월 1일 ~ 12월 3일 오프라인 현장 DP',
-  headline: 'CON:NECT가 기획한 축제 굿즈는 12/1 ~ 12/3 오프라인 축제 현장에 DP(전시)됩니다!',
   desc: 'TEAM 닭갈비 vs TEAM 막국수 라이벌 콘셉트와 〈막닭.ZIP〉 리워드 파츠를 포함한 CON:NECT가 기획한 축제 굿즈 실물은 12월 1일부터 3일까지 오프라인 현장 부스에 직접 DP해 두어 누구나 실물을 확인하고 만날 수 있습니다.',
 };
+
+export type GoodsTeamFilter = 'all' | 'dakgalbi' | 'makguksu' | 'shared';
+
+export interface FestivalGoodsItem {
+  id: string;
+  name: string;
+  category: string;
+  team: 'dakgalbi' | 'makguksu' | 'shared';
+  teamLabel: string;
+  image: string;
+  desc: string;
+}
+
+export const FESTIVAL_GOODS_CATALOG: FestivalGoodsItem[] = [
+  {
+    id: 'goods-tshirt-both',
+    name: '둘 다 먹은 사람 티셔츠',
+    category: '티셔츠 · 어패럴',
+    team: 'shared',
+    teamLabel: '막닭 연합',
+    image: '/assets/aistudio/____________________4fdadfb4.png',
+    desc: '닭갈비 양념과 막국수 육수가 유쾌하게 튄 미식 완주 기념 티셔츠',
+  },
+  {
+    id: 'goods-tshirt-dak',
+    name: '닭갈비 먹은 사람 티셔츠',
+    category: '티셔츠 · 어패럴',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/____________________b28aa25b.png',
+    desc: '매콤한 철판 닭갈비 양념 자국 포인트를 담은 재치 있는 그래픽 티셔츠',
+  },
+  {
+    id: 'goods-tshirt-mak',
+    name: '막국수 먹은 사람 티셔츠',
+    category: '티셔츠 · 어패럴',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/____________________33b666d9.png',
+    desc: '시원한 동치미·메밀 육수 튐 그래픽이 포인트인 막국수파 티셔츠',
+  },
+  {
+    id: 'goods-led-mak',
+    name: 'LED 막국수 응원봉',
+    category: '공연 응원 굿즈',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/LED____________2d8fa8ef.png',
+    desc: '공지천 풀무원 스테이지 야간 밴드 공연용 푸른 물결「막」LED 응원봉',
+  },
+  {
+    id: 'goods-led-dak',
+    name: 'LED 닭갈비 응원봉',
+    category: '공연 응원 굿즈',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/LED____________ece10ec1.png',
+    desc: '공지천 풀무원 스테이지 야간 밴드 공연용 불꽃「닭」LED 응원봉',
+  },
+  {
+    id: 'goods-slogan-towel',
+    name: 'TEAM 닭갈비 · TEAM 막국수 응원 슬로건 타월',
+    category: '공연 응원 굿즈',
+    team: 'shared',
+    teamLabel: '막닭 연합',
+    image: '/assets/aistudio/_____________e9e76f50.png',
+    desc: '양 팀 불꽃·파도 그래픽을 담은 공연 및 현장 응원용 슬로건 타월',
+  },
+  {
+    id: 'goods-keyring-mak-char',
+    name: '메밀 막국수 캐릭터 아크릴 키링',
+    category: '아크릴 키링',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/________________8fa4bbad.png',
+    desc: '삶은 계란·오이 고명이 올라간 귀염뽀짝 막국수 그릇 아크릴 키링',
+  },
+  {
+    id: 'goods-keyring-dak-char',
+    name: '춘천 닭갈비 캐릭터 아크릴 키링',
+    category: '아크릴 키링',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/________________37bea194.png',
+    desc: '주황 목도리를 두른 시그니처 병아리·닭 캐릭터 아크릴 키링',
+  },
+  {
+    id: 'goods-keyring-mak-irae',
+    name: '"막~이래!" 아크릴 키링',
+    category: '아크릴 키링',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/____________________9a409cec.png',
+    desc: '블루 오벌 배지 스타일의 언어유희 레터링「막~이래!」아크릴 키링',
+  },
+  {
+    id: 'goods-keyring-jeulgeopdak',
+    name: '"즐겁닭" 아크릴 키링',
+    category: '아크릴 키링',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/__________________97f167a8.png',
+    desc: '톡톡 튀는 별폭발 실루엣에「즐겁닭」문구를 담은 아크릴 키링',
+  },
+  {
+    id: 'goods-charm-dakgalbi-3pack',
+    name: '닭·갈·비 3구 블리스터 참 세트',
+    category: '아크릴 키링 · 참',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/______________92a87abe.png',
+    desc: '별 그래픽과「닭」「갈」「비」3종 원형 참이 담긴 레트로 블리스터 팩',
+  },
+  {
+    id: 'goods-pouch-mak',
+    name: 'Mak. 그래픽 미니 파우치',
+    category: '파우치 · 소품',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/_________Mak__34972f36.png',
+    desc: '민트 하프톤 배경에 형광 별과 Mak. 레터링이 들어간 미니 파우치',
+  },
+  {
+    id: 'goods-pouch-dak',
+    name: 'Dak. 그래픽 미니 파우치',
+    category: '파우치 · 소품',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/_________Dak__785b9f58.png',
+    desc: '핫핑크 하프톤 배경에 형광 별과 Dak. 레터링이 들어간 미니 파우치',
+  },
+  {
+    id: 'goods-badge-i-love-mak',
+    name: 'I ♥ 막국수 도트 그립톡 · 핀버튼',
+    category: '그립톡 · 핀버튼',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/________I______621e418a.png',
+    desc: '파스텔 도트 패턴 위 블루 하트로 막국수 팬심을 드러내는 원형 굿즈',
+  },
+  {
+    id: 'goods-badge-i-love-dak',
+    name: 'I ♥ 닭갈비 도트 그립톡 · 핀버튼',
+    category: '그립톡 · 핀버튼',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/________I______d05190f5.png',
+    desc: '파스텔 도트 패턴 위 오렌지 하트로 닭갈비 팬심을 드러내는 원형 굿즈',
+  },
+  {
+    id: 'goods-pin-maknaerim',
+    name: '막내림 받은날 원형 핀버튼',
+    category: '그립톡 · 핀버튼',
+    team: 'makguksu',
+    teamLabel: 'TEAM 막국수',
+    image: '/assets/aistudio/_________________40401cac.png',
+    desc: '딥 블루 그라데이션 위에「막내림 받은날」레터링이 새겨진 원형 핀버튼',
+  },
+  {
+    id: 'goods-pin-daknaerim',
+    name: '닭내림 받은날 원형 핀버튼',
+    category: '그립톡 · 핀버튼',
+    team: 'dakgalbi',
+    teamLabel: 'TEAM 닭갈비',
+    image: '/assets/aistudio/_________________44635086.png',
+    desc: '오렌지 그라데이션 위에「닭내림 받은날」레터링이 새겨진 원형 핀버튼',
+  },
+];
 
 export const FINAL_IMPACTS = [
   {
